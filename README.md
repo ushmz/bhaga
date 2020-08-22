@@ -1,6 +1,6 @@
 # Bhaga
 
-This is slackbot which had been used in my laboratory(needs python `3.6.7` or higher).
+This is slackbot which I had been used(needs python `3.6.7` or higher).
 
 ## How to use
 
