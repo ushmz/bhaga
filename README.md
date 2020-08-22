@@ -1,6 +1,6 @@
 # Bhaga
 
-This is slackbot for my laboratry.
+This is slackbot which had been used in my laboratory(needs python `3.6.7` or higher).
 
 ## How to use
 
@@ -13,7 +13,6 @@ git clone https://github.com/rabhareit/bhaga.git
 2. Install required packages.
 
 ```shell
-poetry shell
 poetry install
 ```
 
