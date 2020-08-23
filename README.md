@@ -1,6 +1,6 @@
 # Bhaga
 
-This is slackbot which I had been used(needs python `3.6.7` or higher).
+This is slackbot which I had been using(needs python `3.6.7` or higher).
 
 ## How to use
 
@@ -12,8 +12,19 @@ git clone https://github.com/rabhareit/bhaga.git
 
 2. Install required packages.
 
+If you use poetry, run below.
 ```shell
 poetry install
+```
+
+If not, see `pyproject.toml` 
+
+```toml:pyproject.toml
+[tool.poetry.dependencies]
+python = "^3.6"
+slackbot = "^1.0.0"
+mysql-connector-python = "^8.0.21"
+configparser = "^5.0.0"
 ```
 
 3. Prepare Database. Table structure is defined in `static/sql/table.sql`
