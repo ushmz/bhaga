@@ -1,4 +1,3 @@
-from flask import Flask
 from slackbot.bot import Bot
 from slackbot.slackclient import SlackClient as client
 
