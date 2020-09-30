@@ -1,7 +1,6 @@
-"""
-from plugins.SQLRepository import SQLRepository as repo
+from plugins.shiftbot.SQLRepository import restart
 from slackbot.bot import respond_to
-
+"""
 # 2525室のごみ捨て当番を次の人に交代する
 @respond_to('next trash -r 2525')
 def nextTrash2525(message, args):
@@ -32,3 +31,8 @@ def prevTrash2721(message):
     repo.prevTrash('2721')
     message.reply(repo.presentTrash('2721'))
 """
+
+@respond_to('restart')
+def decideFirst(message):
+    name = restart()
+    message.reply('次回のごみ捨て当番は%sさんです。' % name)
