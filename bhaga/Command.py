@@ -1,4 +1,4 @@
-from plugins.shiftbot.SQLRepository import restart
+from bhaga.SQLRepository import restart
 from slackbot.bot import respond_to
 """
 # 2525室のごみ捨て当番を次の人に交代する
@@ -32,7 +32,3 @@ def prevTrash2721(message):
     message.reply(repo.presentTrash('2721'))
 """
 
-@respond_to('restart')
-def decideFirst(message):
-    name = restart()
-    message.reply('次回のごみ捨て当番は%sさんです。' % name)

@@ -180,10 +180,10 @@ def lsReply(message, *args):
     message.react('電車')
 
 
-@respond_to(r'.*(疲れた|つかれた)')
+@respond_to(r'(.*)(疲れた|つかれた)(.*)')
 def giveYouFireSpaghetti(message, *args):
     body = message.body['text']
-    message.reply(body + 'だと？')
+    message.reply(args[0] + 'だと？')
     message.reply('ったく……これ持って行けよ\n\n\t:fire::fire::fire:\n\t:fire::spaghetti::fire:\n\t:fire::fire::fire:\n\n')
     message.reply('ファイヤースパゲティだ')
     message.reply('ただの燃えてるスパゲティだが、ないよりはマシだろう')
