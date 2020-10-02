@@ -37,22 +37,24 @@ def sendTrashDuty2525AND2721(message, *args):
         logger.logException(e)
     finally:
         countMention(message.body['user'])
-    
-
 
 @respond_to(r'^(?=.*[ごみ|ゴミ])(?=.*終)')
 def sayThanks(message, *args):
     if message.body['user'] in [t[0] for t in getNextTrash()] :
         message.react('+1')
         message.reply('ありがとうございます!!')
+    else:
+        message.react('thinking_face')
+        message.reply('今週のゴミ当番ではないようです。')
+        message.reply('おかしな挙動をしていると考えられる場合は @Yusuke Shimizu までご連絡ください。:man-bowing:')
     countMention(message.body['user'])
 
 @respond_to(r'^(?=.*[ごみ|ゴミ])(?=.*更新)')
 def update(message, *args):
     guri, gura = updateTrash()
     message.reply('次回のごみ捨て当番は%sさん，%sさんです。' % (guri[1], gura[1]))
-    client.send_message(channel=guri[0], message="次回のごみ捨て当番です。よろしくおねがいします。\n(このメッセージはテストです。実際の当番ではありません。)")
-    client.send_message(channel=gura[0], message="次回のごみ捨て当番です。よろしくおねがいします。\n(このメッセージはテストです。実際の当番ではありません。)")
+    client.send_message(channel=guri[0], message="次回のごみ捨て当番です。よろしくおねがいします。")
+    client.send_message(channel=gura[0], message="次回のごみ捨て当番です。よろしくおねがいします。")
     logger.logInfo(f'Send notification to {guri[1]}さん({guri[0]}), {gura[1]}さん({gura[0]}).')
     countMention(message.body['user'])
     
@@ -61,7 +63,7 @@ def update(message, *args):
 def decideFirst(message, *args):
     guri, gura = restart()
     message.reply('次回のごみ捨て当番は%sさん、%sさんです。' % (guri[1], gura[1]))
-    client.send_message(channel=guri[0], message="次回のごみ捨て当番です。よろしくおねがいします。\n(このメッセージはテストです。実際の当番ではありません。)")
-    client.send_message(channel=gura[0], message="次回のごみ捨て当番です。よろしくおねがいします。\n(このメッセージはテストです。実際の当番ではありません。)")
+    client.send_message(channel=guri[0], message="次回のごみ捨て当番です。よろしくおねがいします。")
+    client.send_message(channel=gura[0], message="次回のごみ捨て当番です。よろしくおねがいします。")
     logger.logInfo(f'Send notification to {guri[1]}さん({guri[0]}), {gura[1]}さん({gura[0]}).')
     countMention(message.body['user'])

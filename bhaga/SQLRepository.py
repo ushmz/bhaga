@@ -115,15 +115,14 @@ def updateTrash():
     guri, gura = None, None
 
     try:
-        cursor.execute("SELECT members.slackID FROM trash WHERE trash._onDuty = TRUE")
+        cursor.execute("SELECT trash.slackID FROM trash WHERE trash._onDuty = TRUE")
         worked = cursor.fetchall()
-        cursor.execute("UPDATE easteregg SET _count = _count+1 WHERE slackID = %s" % (worked[0][0],))
-        cursor.execute("UPDATE easteregg SET _count = _count+1 WHERE slackID = %s" % (worked[1][0],))
+        cursor.execute("UPDATE easteregg SET _count = _count+1 WHERE slackID = '%s'" % (worked[0][0],))
+        cursor.execute("UPDATE easteregg SET _count = _count+1 WHERE slackID = '%s'" % (worked[1][0],))
         connection.commit()
 
         cursor.execute("UPDATE trash SET _doneInLoop = TRUE, _onDuty = FALSE WHERE _onDuty = TRUE")
         connection.commit()
-
         
         cursor.execute("SELECT members.slackID, members._name, members._grade FROM members, trash WHERE members.slackID = trash.slackID AND trash._doneInLoop = FALSE")
         notyet = cursor.fetchall()
@@ -190,4 +189,33 @@ def chooseTwins(results, idx):
 def countMention(slackID):
     connection = getConnection()
     cursor = connection.cursor()
-    cursor.execute("UPDATE easteregg SET _mention = _mention+1 WHERE slackID = %s" % (slackID,))
+    cursor.execute("UPDATE easteregg SET _mentions = _mentions +1 WHERE slackID = '%s'" % (slackID,))
+    connection.commit()
+
+def getCount(slackID):
+    connection = getConnection()
+    cursor = connection.cursor()
+    try:
+        cursor.execute("SELECT _count FROM easteregg WHERE slackID = '%s'" % (slackID,))
+        result = cursor.fetchone()
+    except Exception as e:
+        logger.logException(e)
+    finally:
+        cursor.close()
+        connection.close()
+
+    return result[0]
+
+def getMentionCount(slackID):
+    connection = getConnection()
+    cursor = connection.cursor()
+    try:
+        cursor.execute("SELECT _count FROM easteregg WHERE slackID = '%s'" % (slackID,))
+        result = cursor.fetchone()
+    except Exception as e:
+        logger.logException(e)
+    finally:
+        cursor.close()
+        connection.close()
+
+    return result[0]

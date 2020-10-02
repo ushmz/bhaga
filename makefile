@@ -28,7 +28,7 @@ shiftbot:
 
 .PHONY: init
 init:
-	mysql -u root -p -e "DROP DATABASE IF EXISTS bhaga"
-	mysql -u root -p -e "CREATE DATABASE bhaga"
-	mysql -u root -p bhaga < static/sql/init.sql
-	mysql -u root -p bhaga < static/sql/data/insert.sql
+	# mysql -u yusuk -p -e "DROP DATABASE IF EXISTS ShiftBot"
+	# mysql -u yusuk -p -e "CREATE DATABASE ShiftBot"
+	mysql -u yusuk -p ShiftBot < static/sql/init.sql
+	mysql -u yusuk -p ShiftBot < static/sql/data/insert.sql
