@@ -1,7 +1,6 @@
-"""
-from plugins.SQLRepository import SQLRepository as repo
+from plugins.gomisute.SQLRepository import restart
 from slackbot.bot import respond_to
-
+"""
 # 2525室のごみ捨て当番を次の人に交代する
 @respond_to('next trash -r 2525')
 def nextTrash2525(message, args):
@@ -32,3 +31,4 @@ def prevTrash2721(message):
     repo.prevTrash('2721')
     message.reply(repo.presentTrash('2721'))
 """
+

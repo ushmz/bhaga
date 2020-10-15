@@ -1,25 +1,23 @@
 from slackbot.bot import respond_to, default_reply
+from plugins.gomisute.SQLRepository import getCount, getMentionCount, countMention
 
 import datetime
 
 count = 0
 
-# @default_reply()
-def easterEgg(message, *args):
-    global count
-    count += 1
-    if count % 500 == 0 and count < 1000:
-        message.reply('{}回目のメッセージを受信しました！この調子です！！！'.format(str(count)))
-        message.react('+1')
-    elif count % 100 == 0 and count < 1000:
-        message.reply('{}回目のメッセージを受信しました！おめでとうございます！！！'.format(str(count)))
-        message.react('+1')
-    elif count == 1000:
-        message.reply('{}回目のメッセージを受信しました！私の完敗です...！！！'.format(str(count)))
-        message.reply('これ以上は何もありません！！！')
-        message.react('+1')
-    else:
-        message.reply('「ごみ」を含む文章：\n\t→次回の両室のゴミ当番\n「ごみ」と「部屋番号(半角)」を含む文章：\n\t→該当部屋の次回のごみ捨て当番\n「ごみ」と「終」を含む文章：\n\t→次回のゴミ捨て当番が更新されるのでごみ捨てを行った人が送信してください。\n「議事(録)」を含む文章：\n\t→次回の議事録当番\n「議事(録)」と「終」を含む文章：\n\t→次回の議事録当番が更新されるので議事録当番を行った人が送信してください。')
+fire_spaghetti = """
+\t:fire::fire::fire:
+\t:fire::spaghetti::fire:
+\t:fire::fire::fire:
+"""
+
+ring_Iine = """
+\t\t\t\t:+1:
+\t\t:+1:\t\t\t:+1:
+:+1:\t\t\t\t\t\t\t:+1:
+\t\t:+1:\t\t\t:+1:
+\t\t\t\t:+1:
+"""
 
 @respond_to(r'^cd\s.*')
 def cdReply(message, *args):
@@ -180,10 +178,18 @@ def lsReply(message, *args):
     message.react('電車')
 
 
-@respond_to(r'.*(疲れた|つかれた)')
+@respond_to(r'(.*)(疲れた|つかれた)(.*)')
 def giveYouFireSpaghetti(message, *args):
     body = message.body['text']
-    message.reply(body + 'だと？')
-    message.reply('ったく……これ持って行けよ\n\n\t:fire::fire::fire:\n\t:fire::spaghetti::fire:\n\t:fire::fire::fire:\n\n')
+    if args[0] == '':
+        message.reply('なんだと？')
+    else:
+        message.reply(args[0] + 'だと？')
+    message.reply('ったく……これ持って行けよ\n' + fire_spaghetti + '\n')
     message.reply('ファイヤースパゲティだ')
     message.reply('ただの燃えてるスパゲティだが、ないよりはマシだろう')
+
+@respond_to(r'(.*)(ほめて|褒めて)(.*)')
+def giveYouRingIine(message, *args):
+    body = message.body['text']
+    message.reply('おめでとう！お祝いのリングイーネだっ！\n' + ring_Iine)

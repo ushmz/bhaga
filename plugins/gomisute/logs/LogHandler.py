@@ -1,4 +1,5 @@
 import logging
+import os
 from logging import getLogger, StreamHandler, Formatter, FileHandler
 
 # class LoggingFilter():
@@ -10,18 +11,18 @@ from logging import getLogger, StreamHandler, Formatter, FileHandler
 
 class LogHandler:
 
-    def __init__(self, label):
-        if label == 'init':
+    def __init__(self, label=None):
+        if label != None:
             sep = '########################'
             self.logger = getLogger(__name__)
             self.logger.setLevel(logging.INFO)
 
             logFormat = logging.Formatter(sep+'\n%(asctime)s\n\t%(levelname)s - %(message)s\n')
-
-            self.setLogHandler(logging.ERROR, './error.log', logFormat)
-            self.setLogHandler(logging.WARNING, './warning.log', logFormat)
-            self.setLogHandler(logging.INFO, './info.log', logFormat)
-        elif label != None:
+            os.makedirs(f'./static/stdout/', exist_ok=True)
+            self.setLogHandler(logging.ERROR, f'./static/stdout/{label}_error.log', logFormat)
+            self.setLogHandler(logging.WARNING, f'./static/stdout/{label}_warning.log', logFormat)
+            self.setLogHandler(logging.INFO, f'./static/stdout/{label}_info.log', logFormat)
+        else:
             self.addLogHandler()
     
     def setLogHandler(self, level, filename, logFormat):
