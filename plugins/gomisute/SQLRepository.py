@@ -1,5 +1,5 @@
 # coding: utf-8
-from bhaga.logs.LogHandler import LogHandler
+from plugins.gomisute.logs.LogHandler import LogHandler
 
 import configparser
 import random
@@ -45,7 +45,7 @@ def getNamebySlackID(slackID):
     result = None
 
     try:
-        cursor.execute("SELECT name FROM members WHERE slackID = '%s'" % (slackID,))
+        cursor.execute("SELECT _name FROM members WHERE slackID = '%s'" % (slackID,))
         result = cursor.fetchone()
     except Exception as e:
         logger.logException(e)

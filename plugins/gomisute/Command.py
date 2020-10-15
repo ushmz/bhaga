@@ -1,4 +1,4 @@
-from bhaga.SQLRepository import restart
+from plugins.gomisute.SQLRepository import restart
 from slackbot.bot import respond_to
 """
 # 2525室のごみ捨て当番を次の人に交代する

@@ -1,5 +1,5 @@
 from slackbot.bot import respond_to, default_reply
-from bhaga.SQLRepository import getCount, getMentionCount, countMention
+from plugins.gomisute.SQLRepository import getCount, getMentionCount, countMention
 
 import datetime
 
@@ -18,23 +18,6 @@ ring_Iine = """
 \t\t:+1:\t\t\t:+1:
 \t\t\t\t:+1:
 """
-
-@default_reply()
-def easterEgg(message, *args):
-    countMention(message.body['user'])
-    count = getMentionCount(message.body['user'])
-    if count % 500 == 0 and count < 1000:
-        message.reply('{}回目のメッセージを受信しました！この調子です！！！'.format(str(count)))
-        message.react('+1')
-    elif count % 100 == 0 and count < 1000:
-        message.reply('{}回目のメッセージを受信しました！おめでとうございます！！！'.format(str(count)))
-        message.react('+1')
-    elif count == 1000:
-        message.reply('{}回目のメッセージを受信しました！私の完敗です...！！！'.format(str(count)))
-        message.reply('これ以上は何もありません！！！')
-        message.react('+1')
-    else:
-        message.reply('「ごみ」を含む文章：\n\t→次回のゴミ当番を返します。')
 
 @respond_to(r'^cd\s.*')
 def cdReply(message, *args):

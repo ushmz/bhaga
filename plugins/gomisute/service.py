@@ -1,9 +1,10 @@
 # coding: utf-8
-from slackbot.bot import respond_to
+from slackbot.bot import respond_to, default_reply
 from slackbot.slackclient import SlackClient
+import requests
 
-from bhaga.SQLRepository import getNamebySlackID, updateTrash, getNextTrash, restart, countMention
-from bhaga.logs.LogHandler import LogHandler
+from plugins.gomisute.SQLRepository import getNamebySlackID, updateTrash, getNextTrash, restart, countMention, getMentionCount
+from plugins.gomisute.logs.LogHandler import LogHandler
 
 import configparser
 
@@ -13,6 +14,10 @@ conf = configparser.ConfigParser()
 conf.read('./config.ini')
 API_TOKEN = conf['slack']['BOT_USER_OAUTH_ACCESS_TOKEN']
 attempt_user = conf['slack']['attempt_user']
+
+endpoint = conf['chaplus']['endpoint']
+chaplus_key = conf['chaplus']['api_key']
+chaplus_dist = f'{endpoint}?apikey={chaplus_key}'
 
 client = SlackClient(API_TOKEN)
 
@@ -52,6 +57,7 @@ def sayThanks(message, *args):
 @respond_to(r'^(?=.*[ごみ|ゴミ])(?=.*更新)')
 def update(message, *args):
     guri, gura = updateTrash()
+    # TODO: Send to #random instead of DM
     message.reply('次回のごみ捨て当番は%sさん，%sさんです。' % (guri[1], gura[1]))
     client.send_message(channel=guri[0], message="次回のごみ捨て当番です。よろしくおねがいします。")
     client.send_message(channel=gura[0], message="次回のごみ捨て当番です。よろしくおねがいします。")
@@ -67,3 +73,49 @@ def decideFirst(message, *args):
     client.send_message(channel=gura[0], message="次回のごみ捨て当番です。よろしくおねがいします。")
     logger.logInfo(f'Send notification to {guri[1]}さん({guri[0]}), {gura[1]}さん({gura[0]}).')
     countMention(message.body['user'])
+
+def chatting(user, message):
+    header = {
+        'Content-Type': 'application/json'
+    }
+
+    body = {
+        'utterance': message,
+        'username': f"{user}さん",
+        'agentState': {
+            'agentName': 'ごみ捨てbot',
+            'tone': 'normal', # 'normal', 'kansai', 'koshu', 'dechu'
+            # 'age': '23'
+        },
+        # 'addition': {
+        #     'options': ['', '', ''],
+        #     'utterancePairs': [{'utterance': '', 'response': 'hoge,fuga,bar'}],
+        #     'ngwords': [],
+        #     'unknownResponses': ['', '', '']
+        # }
+    }
+
+    response = requests.post(chaplus_dist, headers=header, json=body)    
+    resp = response.json()
+    return resp['bestResponse']['utterance'].replace('さんさん', 'さん')
+
+# Default reply
+@default_reply()
+def easterEgg(message, *args):
+    countMention(message.body['user'])
+    count = getMentionCount(message.body['user'])
+    if count % 500 == 0 and 0 < count < 1000:
+        message.reply('{}回目のメッセージを受信しました！この調子です！！！'.format(str(count)))
+        message.react('+1')
+    elif count % 100 == 0 and 0 < count < 1000:
+        message.reply('{}回目のメッセージを受信しました！おめでとうございます！！！'.format(str(count)))
+        message.react('tada')
+    elif count == 1000:
+        message.reply('{}回目のメッセージを受信しました！私の完敗です...！！！'.format(str(count)))
+        message.reply('これ以上は何もありません！！！')
+        message.react('+1')
+    else:
+        username = getNamebySlackID(message.body['user'])
+        reply_msg = chatting(username, message.body['text'])
+        message.reply(reply_msg)
+        message.reply('ちなみになんですが、「ごみ」を含む文章を送ると次回のゴミ当番がわかるみたいですよ。')
