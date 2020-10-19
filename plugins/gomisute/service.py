@@ -57,10 +57,7 @@ def sayThanks(message, *args):
 @respond_to(r'^(?=.*[ごみ|ゴミ])(?=.*更新)')
 def update(message, *args):
     guri, gura = updateTrash()
-    # TODO: Send to #random instead of DM
-    message.reply('次回のごみ捨て当番は%sさん，%sさんです。' % (guri[1], gura[1]))
-    client.send_message(channel=guri[0], message="次回のごみ捨て当番です。よろしくおねがいします。")
-    client.send_message(channel=gura[0], message="次回のごみ捨て当番です。よろしくおねがいします。")
+    client.send_message(channel='#random', message=f'次回のごみ捨て当番は{guri[1]}さん、{gura[1]}さんです。')
     logger.logInfo(f'Send notification to {guri[1]}さん({guri[0]}), {gura[1]}さん({gura[0]}).')
     countMention(message.body['user'])
     
@@ -68,9 +65,7 @@ def update(message, *args):
 @respond_to('bhaga restart')
 def decideFirst(message, *args):
     guri, gura = restart()
-    message.reply('次回のごみ捨て当番は%sさん、%sさんです。' % (guri[1], gura[1]))
-    client.send_message(channel=guri[0], message="次回のごみ捨て当番です。よろしくおねがいします。")
-    client.send_message(channel=gura[0], message="次回のごみ捨て当番です。よろしくおねがいします。")
+    client.send_message(channel='#random', message=f'次回のごみ捨て当番は{guri[1]}さん、{gura[1]}さんです。')
     logger.logInfo(f'Send notification to {guri[1]}さん({guri[0]}), {gura[1]}さん({gura[0]}).')
     countMention(message.body['user'])
 
