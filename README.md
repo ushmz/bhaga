@@ -1,4 +1,4 @@
-# Bhaga
+# Bhaga (DEPRECATED)
 
 This is slackbot which I had been using(needs python `3.6.7` or higher).
 
