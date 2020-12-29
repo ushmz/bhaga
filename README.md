@@ -19,7 +19,7 @@ poetry install
 
 If not, see `pyproject.toml` or `requirements.txt`.
 
-3. Prepare Database. Table structure is defined in `static/sql/table.sql`
+3. Prepare Database. Table structure is defined in `static/sql/init.sql`
 
 4. Make configure file of your sql as `mysql.ini` on root of this project.
 
