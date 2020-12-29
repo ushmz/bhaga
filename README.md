@@ -17,15 +17,7 @@ If you use poetry, run below.
 poetry install
 ```
 
-If not, see `pyproject.toml` 
-
-```toml:pyproject.toml
-[tool.poetry.dependencies]
-python = "^3.6"
-slackbot = "^1.0.0"
-mysql-connector-python = "^8.0.21"
-configparser = "^5.0.0"
-```
+If not, see `pyproject.toml` or `requirements.txt`.
 
 3. Prepare Database. Table structure is defined in `static/sql/table.sql`
 
